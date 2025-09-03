@@ -22,11 +22,9 @@ type FeedbackCategory = 'gratitude' | 'admiration' | 'appreciation' | 'respect'
 
 const feedbackSchema = z.object({
   recipientId: z.string().min(1, '送信先を選択してください'),
-  category: z.enum(['gratitude', 'admiration', 'appreciation', 'respect'], {
-    required_error: 'カテゴリを選択してください'
-  }),
+  category: z.enum(['gratitude', 'admiration', 'appreciation', 'respect']),
   content: z.string().min(10, 'メッセージは10文字以上で入力してください').max(500, 'メッセージは500文字以下で入力してください'),
-  isAnonymous: z.boolean().default(false)
+  isAnonymous: z.boolean().optional().default(false)
 })
 
 type FeedbackFormData = z.infer<typeof feedbackSchema>

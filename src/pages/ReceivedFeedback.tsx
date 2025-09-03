@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { api } from "../lib/api-simple"
+import { Feedback, FeedbackCategory } from "../types/simple"
 
 const categoryLabels: Record<FeedbackCategory, { label: string; icon: string; color: string }> = {
   gratitude: { label: 'ありがとう', icon: '🙏', color: '#10b981' },
