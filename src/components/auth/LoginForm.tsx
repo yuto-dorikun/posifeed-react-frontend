@@ -5,8 +5,8 @@ import { z } from 'zod'
 import { useAuth } from '../../contexts/AuthContext'
 
 const loginSchema = z.object({
-  email: z.string().email('有効なメールアドレスを入力してください'),
-  password: z.string().min(8, 'パスワードは8文字以上で入力してください'),
+  email: z.string().min(1, 'メールアドレスを入力してください'),
+  password: z.string().min(1, 'パスワードを入力してください'),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -79,6 +79,23 @@ const LoginForm: React.FC = () => {
           padding: '2rem'
         }}>
           <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} onSubmit={handleSubmit(onSubmit)}>
+            {/* テストログイン情報 */}
+            <div style={{
+              backgroundColor: '#eff6ff',
+              border: '1px solid #bfdbfe',
+              borderRadius: '0.375rem',
+              padding: '1rem'
+            }}>
+              <h3 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1e40af', marginBottom: '0.5rem' }}>
+                テストログイン
+              </h3>
+              <div style={{ fontSize: '0.75rem', color: '#1e40af', lineHeight: '1.4' }}>
+                <p><strong>一般ユーザー:</strong> user@example.com / password123</p>
+                <p><strong>管理者:</strong> admin@example.com / password123</p>
+                <p><em>※ どちらも任意のメールアドレス・パスワードでログイン可能です</em></p>
+              </div>
+            </div>
+
             {error && (
               <div style={{
                 backgroundColor: '#fef2f2',

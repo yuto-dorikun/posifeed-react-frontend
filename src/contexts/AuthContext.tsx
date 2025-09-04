@@ -64,15 +64,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await apiClient.login({ email, password })
-      setUser(response.user)
+      // モックログインシステム - 実際のAPIを使わずにログイン成功をシミュレート
+      if (email && password) {
+        // モックトークンを設定
+        const mockToken = 'mock-jwt-token-' + Date.now()
+        localStorage.setItem('auth_token', mockToken)
+        
+        // ユーザータイプに基づいてモックユーザーを設定
+        const mockUser: User = {
+          id: email.includes('admin') ? 1 : 2,
+          email: email,
+          name: email.includes('admin') ? '管理者' : 'ユーザー',
+          role: email.includes('admin') ? 'admin' : 'user',
+          active: true,
+          department: {
+            id: 1,
+            name: email.includes('admin') ? '管理部' : '開発部'
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+        
+        setUser(mockUser)
+      } else {
+        throw new Error('メールアドレスとパスワードを入力してください')
+      }
     } catch (error) {
       throw error
     }
   }
 
   const logout = () => {
-    apiClient.logout()
+    // モックログアウトシステム
     setUser(null)
     localStorage.removeItem('auth_token')
   }

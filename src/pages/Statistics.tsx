@@ -48,7 +48,51 @@ const Statistics: React.FC = () => {
       setIsLoading(true)
       setError(null)
       try {
-        // 直接fetch呼び出しで統計APIにアクセス
+        // モック統計データを使用（実際のAPIは使用しない）
+        console.log('Using mock statistics data for period:', selectedPeriod)
+        
+        // 期間に基づいてモックデータを調整
+        const multiplier = selectedPeriod === '7d' ? 0.3 : selectedPeriod === '30d' ? 1 : selectedPeriod === '90d' ? 2.5 : 4
+        
+        const mockStats: StatisticsData = {
+          totalFeedbacks: Math.floor(156 * multiplier),
+          totalUsers: Math.floor(24 * Math.min(multiplier, 1.5)),
+          feedbacksByCategory: {
+            gratitude: Math.floor(45 * multiplier),
+            admiration: Math.floor(38 * multiplier),
+            appreciation: Math.floor(42 * multiplier),
+            respect: Math.floor(31 * multiplier)
+          },
+          feedbacksThisMonth: Math.floor(156 * (selectedPeriod === 'all' ? 0.3 : 1)),
+          feedbacksLastMonth: Math.floor(142 * (selectedPeriod === 'all' ? 0.3 : 1)),
+          topSenders: [
+            { id: 1, name: '田中 太郎', count: Math.floor(23 * multiplier) },
+            { id: 2, name: '佐藤 花子', count: Math.floor(19 * multiplier) },
+            { id: 3, name: '山田 健一', count: Math.floor(17 * multiplier) },
+            { id: 4, name: '鈴木 美咲', count: Math.floor(15 * multiplier) },
+            { id: 5, name: '高橋 修', count: Math.floor(12 * multiplier) }
+          ],
+          topReceivers: [
+            { id: 6, name: '渡辺 由美', count: Math.floor(28 * multiplier) },
+            { id: 7, name: '中村 和彦', count: Math.floor(24 * multiplier) },
+            { id: 8, name: '小林 真理', count: Math.floor(21 * multiplier) },
+            { id: 9, name: '森田 隆志', count: Math.floor(18 * multiplier) },
+            { id: 10, name: '井上 優子', count: Math.floor(16 * multiplier) }
+          ],
+          feedbackTrends: Array.from({ length: 14 }, (_, i) => ({
+            date: new Date(Date.now() - (13 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            count: Math.floor(Math.random() * 15 * Math.min(multiplier, 1)) + 2
+          })),
+          departmentStats: [
+            { name: '開発部', count: Math.floor(68 * multiplier), percentage: 44 },
+            { name: '営業部', count: Math.floor(42 * multiplier), percentage: 27 },
+            { name: '管理部', count: Math.floor(28 * multiplier), percentage: 18 },
+            { name: 'マーケティング部', count: Math.floor(18 * multiplier), percentage: 11 }
+          ]
+        }
+        
+        // 実際のAPIを使う場合のコード (コメントアウト)
+        /*
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
         const response = await fetch(`${apiUrl}/api/v1/statistics?period=${selectedPeriod}`, {
           method: 'GET',
@@ -63,26 +107,9 @@ const Statistics: React.FC = () => {
         
         const data = await response.json()
         console.log('Statistics API response:', data)
+        */
         
-        // APIレスポンスをStatisticsData形式に変換
-        const transformedStats: StatisticsData = {
-          totalFeedbacks: data.totalFeedbacks || 0,
-          totalUsers: data.totalUsers || 0,
-          feedbacksByCategory: {
-            gratitude: data.feedbacksByCategory?.gratitude || 0,
-            admiration: data.feedbacksByCategory?.admiration || 0,
-            appreciation: data.feedbacksByCategory?.appreciation || 0,
-            respect: data.feedbacksByCategory?.respect || 0
-          },
-          feedbacksThisMonth: data.feedbacksThisMonth || 0,
-          feedbacksLastMonth: data.feedbacksLastMonth || 0,
-          topSenders: data.topSenders || [],
-          topReceivers: data.topReceivers || [],
-          feedbackTrends: data.feedbackTrends || [],
-          departmentStats: data.departmentStats || []
-        }
-        
-        setStats(transformedStats)
+        setStats(mockStats)
       } catch (err: any) {
         console.error('Statistics API error:', err)
         
