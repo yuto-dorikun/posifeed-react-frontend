@@ -1,7 +1,11 @@
 import React from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onMenuClick?: () => void
+}
+
+const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { user, logout } = useAuth()
 
   const handleLogout = () => {
@@ -20,6 +24,27 @@ const Header: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
+        {/* Mobile menu button */}
+        {onMenuClick && (
+          <button
+            onClick={onMenuClick}
+            style={{
+              display: 'block',
+              padding: '0.5rem',
+              marginRight: '1rem',
+              background: 'none',
+              border: 'none',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              color: '#374151',
+              borderRadius: '0.375rem'
+            }}
+            className="md:hidden"
+          >
+            ☰
+          </button>
+        )}
+
         {/* Search */}
         <div style={{
           flex: 1,

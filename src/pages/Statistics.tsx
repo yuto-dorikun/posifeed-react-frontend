@@ -30,11 +30,11 @@ interface StatisticsData {
   }>
 }
 
-const categoryLabels: Record<FeedbackCategory, { label: string; icon: string; color: string }> = {
-  gratitude: { label: 'ありがとう', icon: '🙏', color: '#10b981' },
-  admiration: { label: 'すごい！', icon: '✨', color: '#f59e0b' },
-  appreciation: { label: 'お疲れさま', icon: '💪', color: '#3b82f6' },
-  respect: { label: 'さすが', icon: '👏', color: '#8b5cf6' }
+const categoryLabels: Record<FeedbackCategory, { label: string; color: string }> = {
+  gratitude: { label: 'ありがとう', color: '#10b981' },
+  admiration: { label: 'すごい！', color: '#f59e0b' },
+  appreciation: { label: 'お疲れさま', color: '#3b82f6' },
+  respect: { label: 'さすが', color: '#8b5cf6' }
 }
 
 const Statistics: React.FC = () => {
@@ -49,7 +49,8 @@ const Statistics: React.FC = () => {
       setError(null)
       try {
         // 直接fetch呼び出しで統計APIにアクセス
-        const response = await fetch(`http://localhost:3001/api/v1/statistics?period=${selectedPeriod}`, {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+        const response = await fetch(`${apiUrl}/api/v1/statistics?period=${selectedPeriod}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -161,7 +162,7 @@ const Statistics: React.FC = () => {
   const growthRate = calculateGrowthRate(stats.feedbacksThisMonth, stats.feedbacksLastMonth)
 
   return (
-    <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '1.5rem' }}>
+    <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '1rem' }}>
       <div style={{ marginBottom: '2rem' }}>
         <div style={{
           display: 'flex',
@@ -180,7 +181,7 @@ const Statistics: React.FC = () => {
           </div>
 
           {/* 期間選択 */}
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             {[
               { key: '7d', label: '過去7日' },
               { key: '30d', label: '過去30日' },
@@ -221,6 +222,64 @@ const Statistics: React.FC = () => {
           {error}
         </div>
       )}
+
+      {/* カテゴリ別カウント - 5列表示 */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: '1rem',
+        marginBottom: '2rem'
+      }}>
+        {/* 総送信数 */}
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '0.75rem',
+          border: '1px solid #e5e7eb',
+          padding: '1.5rem',
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: '#3b82f6',
+            marginBottom: '0.5rem'
+          }}>
+            {formatNumber(stats.totalFeedbacks)}
+          </div>
+          <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+            総送信数
+          </div>
+        </div>
+
+        {/* 各カテゴリ */}
+        {Object.entries(categoryLabels).map(([category, info]) => {
+          const count = stats.feedbacksByCategory[category as FeedbackCategory] || 0
+          
+          return (
+            <div key={category} style={{
+              backgroundColor: 'white',
+              borderRadius: '0.75rem',
+              border: '1px solid #e5e7eb',
+              padding: '1.5rem',
+              boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '2rem',
+                fontWeight: 'bold',
+                color: info.color,
+                marginBottom: '0.5rem'
+              }}>
+                {formatNumber(count)}
+              </div>
+              <div style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+                {info.label}
+              </div>
+            </div>
+          )
+        })}
+      </div>
 
       {/* 主要指標カード */}
       <div style={{
@@ -394,7 +453,6 @@ const Statistics: React.FC = () => {
                       alignItems: 'center',
                       gap: '0.5rem'
                     }}>
-                      <span style={{ fontSize: '1rem' }}>{info.icon}</span>
                       <span style={{ fontSize: '0.875rem', color: '#374151' }}>{info.label}</span>
                     </div>
                     <div style={{

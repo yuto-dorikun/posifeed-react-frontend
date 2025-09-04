@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import Layout from './components/layouts/Layout'
+import ResponsiveLayout from './components/layouts/ResponsiveLayout'
 import Dashboard from './pages/Dashboard'
 import SendFeedback from './pages/SendFeedback'
 import ReceivedFeedback from './pages/ReceivedFeedback'
@@ -16,7 +16,7 @@ function App() {
     <AuthProvider>
       <Router>
         <ProtectedRoute>
-          <Layout>
+          <ResponsiveLayout>
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/send" element={<SendFeedback />} />
@@ -26,7 +26,7 @@ function App() {
               <Route path="/stats" element={<Statistics />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
-          </Layout>
+          </ResponsiveLayout>
         </ProtectedRoute>
       </Router>
     </AuthProvider>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { apiClient } from "../lib/api-simple"
+import FeedbackModal from '../components/FeedbackModal'
 
 interface Feedback {
   id: number
@@ -18,6 +19,7 @@ const Dashboard: React.FC = () => {
   const { user } = useAuth()
   const [recentFeedbacks, setRecentFeedbacks] = useState<Feedback[]>([])
   const [loading, setLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     // モックデータを使用してAPI呼び出しをスキップ
@@ -100,7 +102,43 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div style={{ padding: '1rem' }}>
+      {/* Header with Send Feedback Button */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '1.5rem',
+        flexWrap: 'wrap',
+        gap: '1rem'
+      }}>
+        <h1 style={{ 
+          fontSize: '1.875rem', 
+          fontWeight: 'bold',
+          color: '#111827'
+        }}>
+          ダッシュボード
+        </h1>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.5rem',
+            fontSize: '1rem',
+            fontWeight: '500',
+            cursor: 'pointer',
+            boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+        >
+          フィードバックを送る
+        </button>
+      </div>
 
       {/* Stats Grid */}
       <div style={{
@@ -149,7 +187,7 @@ const Dashboard: React.FC = () => {
       {/* Recent Feedbacks and Quick Actions */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
         gap: '1.5rem'
       }}>
         <div style={{
@@ -304,8 +342,9 @@ const Dashboard: React.FC = () => {
             flexDirection: 'column',
             gap: '0.5rem'
           }}>
-            <Link to="/send">
-              <button style={{
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              style={{
                 width: '100%',
                 padding: '0.75rem',
                 fontSize: '0.875rem',
@@ -318,8 +357,7 @@ const Dashboard: React.FC = () => {
                 textAlign: 'left'
               }}>
                 フィードバックを送信
-              </button>
-            </Link>
+            </button>
             <Link to="/users">
               <button style={{
                 width: '100%',
@@ -355,6 +393,16 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Feedback Modal */}
+      <FeedbackModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={() => {
+          // リフレッシュやトーストメッセージなど
+          setIsModalOpen(false)
+        }}
+      />
     </div>
   )
 }

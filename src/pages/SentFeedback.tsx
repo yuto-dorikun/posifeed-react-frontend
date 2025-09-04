@@ -15,11 +15,11 @@ interface Feedback {
 
 type FeedbackCategory = 'gratitude' | 'admiration' | 'appreciation' | 'respect'
 
-const categoryLabels: Record<FeedbackCategory, { label: string; icon: string; color: string }> = {
-  gratitude: { label: 'ありがとう', icon: '🙏', color: '#10b981' },
-  admiration: { label: 'すごい！', icon: '✨', color: '#f59e0b' },
-  appreciation: { label: 'お疲れさま', icon: '💪', color: '#3b82f6' },
-  respect: { label: 'さすが', icon: '👏', color: '#8b5cf6' }
+const categoryLabels: Record<FeedbackCategory, { label: string; color: string }> = {
+  gratitude: { label: 'ありがとう', color: '#10b981' },
+  admiration: { label: 'すごい！', color: '#f59e0b' },
+  appreciation: { label: 'お疲れさま', color: '#3b82f6' },
+  respect: { label: 'さすが', color: '#8b5cf6' }
 }
 
 const SentFeedback: React.FC = () => {
@@ -138,7 +138,7 @@ const SentFeedback: React.FC = () => {
   }
 
   return (
-    <div style={{ maxWidth: '64rem', margin: '0 auto', padding: '1.5rem' }}>
+    <div style={{ maxWidth: '64rem', margin: '0 auto', padding: '1rem' }}>
       <div style={{ marginBottom: '2rem' }}>
         <div style={{
           marginBottom: '0.5rem'
@@ -212,16 +212,10 @@ const SentFeedback: React.FC = () => {
               }}
             >
               <div style={{
-                fontSize: '1.5rem',
-                marginBottom: '0.5rem'
-              }}>
-                {info.icon}
-              </div>
-              <div style={{
-                fontSize: '1.5rem',
+                fontSize: '2rem',
                 fontWeight: 'bold',
                 color: info.color,
-                marginBottom: '0.25rem'
+                marginBottom: '0.5rem'
               }}>
                 {count}
               </div>
@@ -299,7 +293,6 @@ const SentFeedback: React.FC = () => {
                   fontSize: '0.875rem'
                 }}
               >
-                <span>{info.icon}</span>
                 {info.label}
               </button>
             ))}
@@ -407,9 +400,6 @@ const SentFeedback: React.FC = () => {
                       backgroundColor: `${categoryInfo.color}20`,
                       borderRadius: '0.5rem'
                     }}>
-                      <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>
-                        {categoryInfo.icon}
-                      </span>
                       <span style={{
                         color: categoryInfo.color,
                         fontWeight: '600',

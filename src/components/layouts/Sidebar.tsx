@@ -4,7 +4,6 @@ import { useAuth } from '../../contexts/AuthContext'
 
 const navigation = [
   { name: 'ダッシュボード', href: '/' },
-  { name: 'フィードバック送信', href: '/send' },
   { name: '受信フィードバック', href: '/received' },
   { name: '送信履歴', href: '/sent' },
   { name: 'メンバー', href: '/users' },

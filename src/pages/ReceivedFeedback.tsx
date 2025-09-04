@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { api } from "../lib/api-simple"
 import { Feedback, FeedbackCategory } from "../types/simple"
 
-const categoryLabels: Record<FeedbackCategory, { label: string; icon: string; color: string }> = {
-  gratitude: { label: 'ありがとう', icon: '🙏', color: '#10b981' },
-  admiration: { label: 'すごい！', icon: '✨', color: '#f59e0b' },
-  appreciation: { label: 'お疲れさま', icon: '💪', color: '#3b82f6' },
-  respect: { label: 'さすが', icon: '👏', color: '#8b5cf6' }
+const categoryLabels: Record<FeedbackCategory, { label: string; color: string }> = {
+  gratitude: { label: 'ありがとう', color: '#10b981' },
+  admiration: { label: 'すごい！', color: '#f59e0b' },
+  appreciation: { label: 'お疲れさま', color: '#3b82f6' },
+  respect: { label: 'さすが', color: '#8b5cf6' }
 }
 
 const ReceivedFeedback: React.FC = () => {
@@ -104,7 +104,7 @@ const ReceivedFeedback: React.FC = () => {
   }
 
   return (
-    <div style={{ maxWidth: '64rem', margin: '0 auto', padding: '1.5rem' }}>
+    <div style={{ maxWidth: '64rem', margin: '0 auto', padding: '1rem' }}>
       <div style={{ marginBottom: '2rem' }}>
         <div style={{
           marginBottom: '0.5rem'
@@ -193,7 +193,6 @@ const ReceivedFeedback: React.FC = () => {
                   gap: '0.5rem'
                 }}
               >
-                <span>{info.icon}</span>
                 {info.label} ({count})
               </button>
             )
@@ -273,9 +272,6 @@ const ReceivedFeedback: React.FC = () => {
                     borderRadius: '0.5rem',
                     marginRight: '1rem'
                   }}>
-                    <span style={{ fontSize: '1.25rem', marginRight: '0.5rem' }}>
-                      {categoryInfo.icon}
-                    </span>
                     <span style={{
                       color: categoryInfo.color,
                       fontWeight: '600',
@@ -412,9 +408,6 @@ const ReceivedFeedback: React.FC = () => {
                 backgroundColor: `${categoryLabels[selectedFeedback.category].color}20`,
                 borderRadius: '0.5rem'
               }}>
-                <span style={{ fontSize: '1.5rem', marginRight: '0.75rem' }}>
-                  {categoryLabels[selectedFeedback.category].icon}
-                </span>
                 <span style={{
                   color: categoryLabels[selectedFeedback.category].color,
                   fontWeight: '700',
